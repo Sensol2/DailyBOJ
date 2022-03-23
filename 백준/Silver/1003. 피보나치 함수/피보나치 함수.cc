@@ -21,11 +21,6 @@ int main()
 		cnt[1][i] = cnt[1][i - 2] + cnt[1][i - 1];
 	}
 
-	//for (int i = 0; i < 40; i++)
-	//{
-	//	printf("%d\n", arr[i]);
-	//}
-
 	int inputs[100]; 
 	scanf("%d", &count);
 	for (int i = 0; i < count; i++)
