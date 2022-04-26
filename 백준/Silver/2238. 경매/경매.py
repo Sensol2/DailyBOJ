@@ -1,14 +1,15 @@
+import sys, math
 U, N = map(int,input().split())
 
 auction = [[] for _ in range(U+1)]
 
 for i in range(N):
-    S, P = input().split()
+    S, P = sys.stdin.readline().rstrip().split()
     P = int(P)
     auction[P].append((S, P))
 
 winner = None
-min_Participant = 999999
+min_Participant = math.inf
 for i in range(U):
     if not auction[i]: 
         continue
