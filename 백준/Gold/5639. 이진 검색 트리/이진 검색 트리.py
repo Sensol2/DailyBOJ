@@ -1,64 +1,45 @@
-# dawitblog.tistory.com
 import sys
-sys.setrecursionlimit(20000)
-input = sys.stdin.readline
+sys.setrecursionlimit(10000)
 
-# 노드
+
 class Node:
-    def __init__(self,val):
-        self.val = val
-        self.lchild = None
-        self.rchild = None
+    def __init__(self, item):
+        self.item = item
+        self.left_node = None
+        self.right_node = None
 
-# 트리
-class Tree:
-    def __init__(self):
-        self.root = None
+    def AddChildNode(self, new_node):
 
-    # 트리에 노드 추가
-    def add(self,val):
-        if(self.root == None):
-            self.root = Node(val)
-        
+        if self.item > new_node.item and not self.left_node:
+            self.left_node = new_node
+            # print("Added ", new_node.item, "in parent", node.item)
+            return
+        elif self.item < new_node.item and not self.right_node:
+            self.right_node = new_node
+            # print("Added ", new_node.item, "in parent", node.item)
+            return
         else:
-            current = self.root
-            while(True):
-                if(current.val > val):
-                    if(current.lchild == None):
-                        current.lchild = Node(val)
-                        break
-                    current = current.lchild
+            if self.left_node and self.item > new_node.item:
+                self.left_node.AddChildNode(new_node)
+            if self.right_node:
+                self.right_node.AddChildNode(new_node)
 
-                if(current.val < val):
-                    if(current.rchild == None):
-                        current.rchild = Node(val)
-                        break
-                    current = current.rchild
-    
-    # 후위 순회
-    def postOrder(self,node=None):
-        global answer
-        
-        if node == None:
-            node = self.root
-        
-        if node.lchild != None:
-            self.postOrder(node.lchild)
-        if node.rchild != None:
-            self.postOrder(node.rchild)
-        answer.append(node.val)
+    def PrintbyPostfix(self):
+
+        if self.left_node:
+            self.left_node.PrintbyPostfix()
+        if self.right_node:
+            self.right_node.PrintbyPostfix()
+        print(self.item)
 
 
-tree = Tree()
+root = int(input())
+node = Node(root)
 
-# 입력
-while True:
-    try:
-        tree.add(int(input()))
-    except:
-        break
+lines = sys.stdin.readlines()
 
-# 출력
-answer = []
-tree.postOrder()
-print('\n'.join(map(str,answer)))
+for line in lines:
+    line = line.strip()
+    node.AddChildNode(Node(int(line)))
+
+node.PrintbyPostfix()
