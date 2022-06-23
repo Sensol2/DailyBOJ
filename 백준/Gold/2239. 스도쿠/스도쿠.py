@@ -35,6 +35,8 @@ def Backtracking(y, x, Q, depth):
     exists += GetAreaNumbers(y, x)
     exists += GetRowNumbers(y, x, exists)
     exists += GetColumnNumbers(y, x, exists)
+
+    # candidate - exists (차집합)
     candidate = [x for x in candidate if x not in exists]
 
     for num in candidate:
@@ -47,13 +49,13 @@ def Backtracking(y, x, Q, depth):
             return -1
         ny, nx = Q[depth][0], Q[depth][1]
         res = Backtracking(ny, nx, Q, depth+1)
-        if res == -1:
+        if res == -1:  # -1 반환시 즉시 백트래킹 탈출, 종료
             return -1
         board[y][x] = 0
 
 
 board = [[0]*9 for _ in range(9)]
-Q = deque()
+Q = deque()  # 비어 있는 칸들의 좌표 큐
 for i in range(9):
     board[i] = list(map(int, list(sys.stdin.readline().rstrip())))
     for j in range(9):
