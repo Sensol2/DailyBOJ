@@ -29,8 +29,4 @@ for idx, num in enumerate(arr):
     else:
         result[res] = num
 
-count = 0
-for r in result:
-    if r:
-        count += 1
-print(count)
+print(len(result))
