@@ -1,19 +1,13 @@
-import sys, time
+DP = [0] * 20001
 
-selfnums = list(range(1, 10000))
-for i in range(10000):
-	num = i
-	div = 10
-	a = []
-	while True:
-		a.append(num % div)
-		num = num // div
-		if num // div == 0:
-			a.append(num % div)
-			break
-	selfnum = i + sum(a)
-	if selfnum in selfnums:
-		selfnums.remove(selfnum)
+for i in range(10001):
+    result = i
+    parts = list(map(int, list(str(i))))
+    for part in parts:
+        result += part
 
-for i in selfnums:
-	print(i)
+    DP[result] = result
+
+for i in range(1, 10001):
+    if DP[i] == 0:
+        print(i)
