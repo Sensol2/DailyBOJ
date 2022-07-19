@@ -56,8 +56,8 @@ for i in range(N):
 
 white_board = copy.deepcopy(board)
 black_board = copy.deepcopy(board)
-ExceptColor(white_board, "white")
-ExceptColor(black_board, "black")
+ExceptColor(white_board, "black")
+ExceptColor(black_board, "white")
 
 bishops = []
 white_count = 0
