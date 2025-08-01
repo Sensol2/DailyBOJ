@@ -1,38 +1,32 @@
 import sys
 from collections import deque
-
 input = sys.stdin.readline
 
-# 좌, 우, 하, 상
-dy = [0, 0, -1, 1]
-dx = [-1, 1, 0, 0]
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
 
-
-def BFS(x, y, K):
-    visited = [[[-1] * M for _ in range(N)] for _ in range(K+1)]
-    Q = deque()
-    Q.append([0, 0, 0])
-
-    visited[0][0][0] = 0
-    while Q:
-        y, x, k = Q.popleft()
-        if x == M-1 and y == N-1:  # 도착
-            return visited[k][y][x]+1
-
+def bfs(start,K):
+    visited = [[[-1] * C for _ in range(R)] for _ in range(K+1)]
+    queue = deque()
+    queue.append([0] + start)
+    answer = R+C+1
+    visited[0][start[0]][start[1]] = 0
+    while queue:
+        break_cnt, x, y = queue.popleft()
+        if x == R-1 and y == C-1:
+            return visited[break_cnt][x][y]+1
         for i in range(4):
-            ty = y + dy[i]
-            tx = x + dx[i]
-            if 0 <= tx < M and 0 <= ty < N:
-                if board[ty][tx] == 1 and k < K and visited[k+1][ty][tx] == -1:  # 벽 부수기
-                    Q.append([ty, tx, k+1])
-                    visited[k+1][ty][tx] = visited[k][y][x]+1
-
-                elif board[ty][tx] == 0 and visited[k][ty][tx] == -1:  # 방문처리 및 BFS
-                    Q.append([ty, tx, k])
-                    visited[k][ty][tx] = visited[k][y][x]+1
+            ax = x + dx[i]
+            ay = y + dy[i]
+            if 0 <= ax < R and 0 <= ay < C:
+                if board[ax][ay] == 1 and break_cnt < K and visited[break_cnt + 1][ax][ay] == -1 :
+                    queue.append([break_cnt+1,ax,ay])
+                    visited[break_cnt+1][ax][ay] = visited[break_cnt][x][y] + 1
+                elif board[ax][ay] == 0 and visited[break_cnt][ax][ay] == -1:
+                    queue.append([break_cnt,ax,ay])
+                    visited[break_cnt][ax][ay] = visited[break_cnt][x][y] + 1
     return -1
+R,C,K = map(int,input().split())
+board = [list(map(int,input().strip())) for _ in range(R)]
 
-
-N, M, K = map(int, input().split())
-board = [list(map(int, input().strip())) for _ in range(N)]
-print(BFS(0, 0, K))
+print(bfs([0,0],K))
