@@ -1,43 +1,49 @@
-def RepaintArea(board, y, x):
-    count = 0
-    if board[y][x] == 'W': # 첫번째 칸이 W인 경우
-        for i in range(8):
-            if i % 2 == 0:
-                pattern = ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B']
-            else:
-                pattern = ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W']
-
-            for j in range(8):
-                if board[y+i][x+j] != pattern[j]:
-                    count += 1
-
-    if board[y][x] == 'B': # 첫번째 칸이 B인 경우
-        for i in range(8):
-            if i % 2 == 0:
-                pattern = ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W']
-            else:
-                pattern = ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B']
-
-            for j in range(8):
-                if board[y+i][x+j] != pattern[j]:
-                    count += 1
-
-    return count
+import math
 
 N, M = map(int, input().split())
-board = [[] for _ in range(N)]
-for i in range(N):
-    board[i] = list(input())
+board = [list(input()) for _ in range(N)]
 
-results = []
-for i in range(0, (N-8)+1):
-    for j in range(0, (M-8)+1):
-        results.append(RepaintArea(board, i, j))
-        board2 = list(board)
-        if board2[i][j] == 'W':
-            board2[i][j] = 'B'
-        else:
-            board2[i][j] = 'W'
-        results.append(RepaintArea(board2, i, j) + 1)
+patternA = [['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ]
 
-print(min(results))
+patternB = [['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B'], 
+            ['B', 'W', 'B', 'W', 'B', 'W', 'B', 'W'],
+            ['W', 'B', 'W', 'B', 'W', 'B', 'W', 'B']
+            ]
+
+def count_repaint(x, y):
+    # pattern A 체크
+    countA = 0
+    for i in range(8):
+        for j in range(8):
+            if board[y+i][x+j] != patternA[i][j]:
+                countA += 1
+
+    # pattern B 체크
+    countB = 0
+    for i in range(8):
+        for j in range(8):
+            if board[y+i][x+j] != patternB[i][j]:
+                countB += 1
+
+    return min(countA, countB)
+
+ans = float('inf')
+
+for i in range(N-7):
+    for j in range(M-7):
+        ans = min(ans, count_repaint(j, i))
+
+print(ans)
