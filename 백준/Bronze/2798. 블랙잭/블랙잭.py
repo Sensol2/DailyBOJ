@@ -1,12 +1,14 @@
+import math
+
 N, M = map(int, input().split())
-
-arr = list(map(int, input().split()))
-
-best = 999999
+cards = list(map(int, input().split()))
+result = math.inf
 for i in range(N):
     for j in range(i+1, N):
         for k in range(j+1, N):
-            sum_value = arr[i] + arr[j] + arr[k]
-            if abs(M - sum_value) < abs(M - best) and sum_value <= M :
-                best = sum_value
-print(best)
+            sum_value = cards[i] + cards[j] + cards[k]
+            if M < sum_value:
+                continue
+            else:
+                result = min(result, M-sum_value)
+print(M - result)
