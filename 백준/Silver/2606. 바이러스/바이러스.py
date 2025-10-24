@@ -1,25 +1,27 @@
-N = int(input())
-K = int(input())
-
-link = [[] for _ in range(N+1)]
-
-for i in range(K):
-    a, b = map(int, input().split())
-    link[a].append(b)
-    link[b].append(a)
-
-infected = 0
-visited = [False] * (N+1)
-queue = []
-queue.append(1)
-while queue:
-    currNode = queue.pop(0)
-    if visited[currNode] == True:
-        continue
-
-    infected += 1
-    visited[currNode] = True
-    for i in link[currNode]:
-        queue.append(i)
+def dfs(graph, visited, node):
+    if node in visited:
+        return
     
-print(infected - 1)
+    global count
+    if node != 1:
+        count += 1
+
+    visited.add(node)
+    
+    for neighbour in graph[node]:
+        dfs(graph, visited, neighbour)
+
+N = int(input())
+M = int(input())
+
+count = 0
+graph = [[] for _ in range(N+1)]
+visited = set()
+
+for i in range(M):
+    start, end = map(int, input().split())
+    graph[start].append(end)
+    graph[end].append(start)
+
+dfs(graph, visited, 1)
+print(count)
